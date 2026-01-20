@@ -1,0 +1,17 @@
+Active SOC Investigation: Privilege Escalation on MTS-Web
+Currently working through a multi-stage incident involving:
+• 	Suspicious remote sign-in from external IP 
+• 	Script execution and data collection
+• 	Privilege escalation and malware activity
+• 	Path deletion for defense evasion
+The endpoint () was unmanaged, which increased exposure and allowed the attacker to move quickly. The alert that triggered deeper investigation was a “Suspicious path deletion”, often used to hide indicators of compromise.
+ Key stats:
+• 	63 alerts across 7 MITRE categories
+• 	Timeline: Jan 15, 12:50–2:44 PM EST
+• 	Attack stages: Initial Access → Execution → Priv-Esc → Defense Evasion → Malware
+• 	Impacted asset: MTS-Web (high risk, low visibility)
+This case is documented as part of my SOC analyst training and playbook development. You can find related notes and workflows in:
+• 	 (github.com in Bing)
+• 	 (github.com in Bing)
+• 	 (github.com in Bing)
+I’m learning in public — feel free to fork, comment, or connect if you’re working on similar investigations.
