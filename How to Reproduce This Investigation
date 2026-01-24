@@ -1,0 +1,9 @@
+
+1. 	Identify the impacted user(s), suspicious IPs, and time window from the Defender XDR incident.
+2. 	Query  to validate successful sign‑ins and confirm the attacker’s IP.
+3. 	Review MFA and Conditional Access outcomes to determine how authentication was allowed.
+4. 	Identify applications and resources accessed using , , and .
+5. 	Check  for mailbox activity or exfiltration attempts.
+6. 	Query  to validate whether any identity changes occurred.
+7. 	Build a chronological timeline of attacker actions.
+8. 	Classify the incident based on evidence (in this case: credential compromise + reconnaissance).
