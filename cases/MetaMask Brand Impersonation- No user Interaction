@@ -1,0 +1,156 @@
+MetaMask Brand Impersonation – No User Interaction
+
+Severity: Low
+Status: Confirmed Phishing – No User Engagement
+Category: Brand Impersonation / Credential Harvesting Attempt
+
+1. Executive Summary
+
+On June 4–5, 2025, a phishing email impersonating MetaMask was delivered to inquiry@mydfir.com. The message claimed an “Unrecognized Login Attempt” in order to create urgency and prompt user action.
+
+Header analysis revealed spoofed infrastructure, homoglyph obfuscation, and PHP mailer artifacts consistent with phishing kit deployment. Telemetry review confirmed no user interaction occurred, and no compromise was observed.
+
+2. Incident Overview
+
+Display Name: “MetaMask”
+
+Sender Address: 82p8n1e3@cfx.io
+
+Return-Path: postmaster@4333998cfe.nxcli.io
+
+Sending Server: cloudhost-119112.us-west-1.nxcli.net
+
+Sending IP: 173.249.144.23
+
+PHP Mailer Artifact: X-PHP-Originating-Script: 10193:bin.php
+
+The email leveraged urgency-based language to simulate a suspicious login alert.
+
+3. Indicators of Compromise (IOCs)
+
+Sender Domain: cfx.io
+
+Infrastructure Domain: nxcli.io
+
+Subdomain: 4333998cfe.nxcli.io
+
+Sending IP: 173.249.144.23
+
+Hosting Pattern: Shared hosting provider
+
+PHP-based mail script execution
+
+The infrastructure aligns with commodity phishing kit behavior.
+
+4. Technical Analysis
+Email Origin
+
+The message did not originate from legitimate MetaMask infrastructure. Instead:
+
+Sent via PHP mailer from shared hosting
+
+Used randomized sender address
+
+Employed homoglyph and domain impersonation techniques
+
+Relied on urgency-based social engineering
+
+These characteristics indicate phishing kit automation rather than targeted enterprise compromise.
+
+5. User Interaction Analysis
+
+Multiple telemetry sources were reviewed:
+
+EmailEvents
+
+No open, preview, delete, or report actions recorded.
+
+UrlClickEvents
+
+No link click activity detected during relevant timeframe.
+
+EmailPostDeliveryEvents
+
+No post-delivery actions logged.
+
+Conclusion: No user interaction occurred.
+
+No credential submission, no endpoint execution, and no suspicious authentication events were observed.
+
+6. MITRE ATT&CK Mapping
+Tactic	Technique
+Initial Access	Phishing (T1566)
+Defense Evasion	Masquerading (T1036)
+Resource Development	Establish Accounts (T1585)
+Credential Access (Intended)	Phishing for Credentials
+
+This campaign represents a credential-harvesting pretext rather than malware delivery.
+
+7. Impact Assessment
+
+No link clicks
+
+No credential submission
+
+No endpoint artifacts
+
+No anomalous sign-ins
+
+No lateral movement
+
+Incident classified as Low Risk – Malicious Email, No Engagement.
+
+8. Containment & Remediation
+Immediate Actions
+
+Block domains:
+
+cfx.io
+
+nxcli.io
+
+4333998cfe.nxcli.io
+
+Block IP: 173.249.144.23
+
+Add message to phishing awareness datasets
+
+Preventive Controls
+
+Enhance filtering for PHP-originating mail scripts
+
+Monitor homoglyph domain variants
+
+Implement brand impersonation detection rules
+
+Continue monitoring for unusual authentication attempts
+
+9. Lessons Learned
+
+Urgency-based login alerts remain highly effective phishing lures.
+
+Shared hosting providers are frequently abused for phishing kit deployment.
+
+Telemetry validation is critical before escalating incidents.
+
+Low-risk phishing still provides valuable detection tuning opportunities.
+
+Analyst Reflection
+
+This investigation reinforces the importance of validating user interaction before escalating severity. While malicious in nature, this case demonstrates effective user avoidance behavior and highlights the value of layered telemetry (EmailEvents, UrlClickEvents, PostDeliveryEvents) in confirming risk level.
+
+Portfolio Value
+
+This case demonstrates:
+
+Email header analysis
+
+Infrastructure attribution awareness
+
+Telemetry correlation
+
+False-positive avoidance
+
+Proper severity classification
+
+Defensive control recommendations
