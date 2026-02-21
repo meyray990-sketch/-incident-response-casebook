@@ -1,0 +1,218 @@
+Human-Operated Ransomware Attempt via Exposed RDP (MST-1198)
+
+Severity: Critical
+Status: Confirmed Multi-Stage Intrusion – Ransomware Prevented
+Environment: Windows Domain (Active Directory)
+
+1. Executive Summary
+
+Between January 18–23, 2026, a human-operated ransomware intrusion was conducted against the MTS environment following unauthorized external RDP access to the domain controller. The attacker leveraged compromised administrator credentials to gain entry, perform reconnaissance, harvest additional credentials, and move laterally across the network.
+
+A staged malware chain (ClipBanker → Installer → Amadey → Ransomware payload) was deployed on downstream hosts. Microsoft Defender disrupted the attack prior to encryption, preventing business impact.
+
+2. Affected Assets
+
+Domain Controller: mts-dc.mts.local
+
+Contractor Workstation: mts-contractorpc1
+
+Primary Malware Staging Host: mts-pc-1
+
+Compromised Accounts:
+
+administrator
+
+zach.balrog
+
+External IPs Observed:
+
+70.49.218.98
+
+213.159.67.124
+
+3. Incident Timeline
+Date (UTC)	Activity
+Jan 18, 2026 – 09:14	Initial RDP access to domain controller
+Jan 20, 2026 – 07:19	Continued unauthorized access
+Jan 23, 2026 – 08:12–16:26	Lateral movement via RDP
+Jan 23, 2026 – 17:22–17:24	Malware deployment and ransomware staging
+Jan 23, 2026	Defender intervention – encryption prevented
+4. Attack Overview
+Initial Access
+
+The attacker gained entry through externally exposed RDP (no MFA) using compromised administrator credentials.
+
+Lateral Movement
+
+After accessing the domain controller, the attacker pivoted internally using RDP:
+
+External → Domain Controller
+
+Domain Controller → mts-contractorpc1
+
+Domain Controller → mts-pc-1 (using stolen zach.balrog credentials)
+
+Malware Deployment
+
+On mts-pc-1, the attacker executed:
+
+ClipBanker (initial loader)
+
+Secondary installer
+
+Amadey botnet loader (masquerading as system process)
+
+Setup[1].exe (ransomware staging payload)
+
+Amadey performed process injection, established persistence, and downloaded additional payloads.
+
+5. Technical Findings
+
+RDP exposed externally without MFA
+
+Administrator credentials reused after compromise
+
+Credential harvesting enabled secondary account abuse
+
+Registry-based persistence established
+
+Process injection observed
+
+Ransomware components staged but not executed
+
+Defender successfully blocked encryption phase
+
+This intrusion demonstrates hands-on-keyboard activity consistent with human-operated ransomware campaigns.
+
+6. MITRE ATT&CK Mapping
+Tactic	Technique
+Initial Access	External Remote Services (T1133)
+Execution	User Execution (T1204.002)
+Persistence	Registry Run Keys (T1547.001)
+Privilege Escalation	Access Token Manipulation (T1134)
+Defense Evasion	Obfuscated Files (T1027)
+Lateral Movement	Remote Desktop Protocol (T1021.001)
+Command & Control	Ingress Tool Transfer (T1105)
+Impact	Data Encrypted for Impact (T1486)
+7. Cyber Kill Chain Analysis
+1. Reconnaissance
+
+Account Discovery (T1087)
+
+Remote System Discovery (T1018)
+
+2. Weaponization
+
+Multi-stage malware chain prepared:
+
+ClipBanker
+
+Installer
+
+Amadey
+
+Ransomware payload
+
+3. Delivery
+
+Direct RDP access using valid credentials (no phishing required).
+
+4. Exploitation
+
+Privileged access abused to harvest credentials and stage malware.
+
+5. Installation
+
+Registry persistence and process injection established on mts-pc-1.
+
+6. Command & Control
+
+Amadey established outbound communications for payload retrieval.
+
+7. Lateral Movement
+
+RDP used internally to expand control.
+
+8. Actions on Objectives
+
+Ransomware staged but encryption blocked by Defender.
+
+8. Root Cause Analysis
+
+Primary contributing factors:
+
+Exposed RDP without MFA
+
+Compromised administrator credentials
+
+Lack of network segmentation
+
+Insufficient privileged account protections
+
+Internal RDP unrestricted
+
+This was not a vulnerability exploit — it was credential abuse.
+
+9. Containment & Remediation
+
+Enable MFA for all privileged and remote accounts
+
+Remove external RDP exposure (require VPN / Zero Trust)
+
+Reset and rotate all privileged credentials
+
+Reimage affected systems
+
+Implement network segmentation
+
+Monitor RDP activity and anomalous authentication patterns
+
+Enforce credential hygiene and password policies
+
+10. Impact Assessment
+
+Domain controller compromised
+
+Lateral movement confirmed
+
+Malware executed
+
+Ransomware staged
+
+Encryption prevented by endpoint protection
+
+Without Defender intervention, this incident likely would have resulted in full ransomware impact.
+
+11. Lessons Learned
+
+Valid credentials eliminate need for exploit-based access
+
+RDP exposure remains a high-risk attack vector
+
+MFA is critical for privileged accounts
+
+Human-operated ransomware follows predictable lateral movement patterns
+
+Early detection of RDP anomalies can prevent catastrophic impact
+
+Analyst Reflection
+
+This case highlights the importance of correlating authentication logs, endpoint telemetry, and process injection alerts to identify structured ransomware behavior before encryption occurs. It reinforces that credential security and remote access hardening are foundational defenses against enterprise compromise.
+
+Portfolio Strength
+
+This report demonstrates:
+
+RDP intrusion analysis
+
+Lateral movement tracking
+
+Malware chain reconstruction
+
+ATT&CK & Kill Chain mapping
+
+Root cause analysis
+
+Enterprise-level remediation planning
+
+Understanding of human-operated ransomware tradecraft
