@@ -1,0 +1,139 @@
+Brand Impersonation Phishing – Duolingo
+
+Severity: Medium
+Status: Confirmed Phishing – No Compromise
+Category: Social Engineering / Brand Impersonation
+
+1. Executive Summary
+
+On July 13, 2025, the mailbox inquiry@mydfir.com received a phishing email impersonating Duolingo. The message originated from a free Italian email provider (libero.it) and was sent via authenticated SMTP infrastructure.
+
+Although the email contained no malicious links or attachments, analysis determined it was an initial-stage social engineering attempt designed to establish rapport and potentially deliver malicious content in a follow-up message.
+
+2. Incident Overview
+
+Display-name spoof: “Duolingo”
+
+Sender address: duolingo.ads@libero.it
+
+Authenticated submission via Libero Mail SMTP (ESMTPSA)
+
+Attacker connection from French residential IP: 90.160.50.35
+
+No embedded links or attachments
+
+No user interaction observed
+
+This activity aligns with early-stage phishing reconnaissance and brand impersonation tactics.
+
+3. Indicators of Compromise (IOCs)
+
+Sender Email: duolingo.ads@libero.it
+
+Source IP: 90.160.50.35 (Orange S.A., France)
+
+Claimed Hostname: 5.9.230.8 (Hetzner, Germany – likely spoofed)
+
+Additional Infrastructure Observed: 213.209.10.34
+
+Mail Server Processing: srv7.swhc.ca
+
+4. Investigation Timeline
+
+Date/Time Received:
+July 13, 2025 – 11:50:03 EDT (UTC-4)
+
+Observations:
+
+Email passed SPF, DKIM, and DMARC for libero.it
+
+Authentication success due to legitimate SMTP account usage
+
+No malicious payload delivered in initial message
+
+No additional follow-up emails detected
+
+No evidence of compromise or lateral movement.
+
+5. Technical Analysis
+
+The attacker authenticated to Libero Mail using valid credentials (ESMTPSA).
+
+The message passed domain-level authentication checks because it was legitimately sent from libero.it.
+
+Brand impersonation occurred via display-name spoofing (“Duolingo”).
+
+Messaging style matched influencer outreach/social collaboration pretexts.
+
+This indicates a staged phishing approach rather than mass spam delivery.
+
+6. MITRE ATT&CK Mapping
+Tactic	Technique
+Initial Access	Phishing (T1566)
+Resource Development	Establish Accounts: Email Accounts (T1585.002)
+Resource Development	Obtain Infrastructure: Email Infrastructure (T1588.002)
+Defense Evasion	Masquerading (T1036)
+Reconnaissance	Gather Victim Identity Information (T1589)
+
+The email represents a pre-delivery stage of a likely multi-step phishing campaign.
+
+7. Impact Assessment
+
+No credential submission
+
+No malicious link execution
+
+No attachment detonation
+
+No lateral movement
+
+Final determination: Phishing Attempt – No Compromise
+
+8. Containment & Remediation
+Immediate Actions
+
+Block sender: duolingo.ads@libero.it
+
+Block IP: 90.160.50.35 (if appropriate for environment)
+
+Flag similar display-name impersonations
+
+Search environment for related indicators
+
+Detection Improvements
+
+Create rule: Brand impersonation + free-mail domain combination
+
+Monitor authenticated SMTP submissions from foreign IP ranges
+
+Strengthen filtering for free-mail providers not used by organization
+
+Conduct user awareness training on influencer-style phishing lures
+
+9. Lessons Learned
+
+Email authentication (SPF/DKIM/DMARC) does not prevent brand impersonation.
+
+Free-mail domains are frequently used in early-stage phishing campaigns.
+
+Display-name spoofing remains highly effective in social engineering.
+
+Proactive IOC search is critical even when no compromise is observed.
+
+Analyst Reflection
+
+This case highlights the importance of differentiating between malicious payload delivery and early-stage social engineering reconnaissance. Even in the absence of user interaction, identifying and documenting brand impersonation patterns strengthens detection posture and reduces future risk.
+
+Portfolio Impact
+
+This report demonstrates:
+
+Email header analysis skills
+
+Infrastructure attribution awareness
+
+Understanding of authentication mechanisms
+
+Proper classification (True Positive – No Compromise)
+
+Defensive recommendations aligned with enterprise SOC practices
