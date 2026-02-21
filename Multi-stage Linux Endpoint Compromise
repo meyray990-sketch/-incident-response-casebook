@@ -1,0 +1,143 @@
+Incident Report: Multi-Stage Linux Endpoint Compromise (MTS-Web)
+
+Severity: High
+Status: Confirmed True Positive
+Environment: Linux (Unmanaged Endpoint)
+
+1. Executive Summary
+
+On January 15, 2026, an unauthorized remote sign-in occurred on the unmanaged Linux endpoint MTS-Web using valid credentials associated with the account newuser. The attacker authenticated from external IP 164.92.218.170 and executed a multi-stage attack involving remote access tooling, privilege escalation, malware deployment, and defense evasion.
+
+The activity chain demonstrates a structured compromise lifecycle consistent with real-world intrusion behavior and required immediate containment and Tier 2 escalation.
+
+2. Incident Overview
+
+Initial Access: Successful remote authentication using valid credentials
+
+Execution: Suspicious scripts and attacker-controlled binaries executed from world-writable directories
+
+Privilege Escalation: Elevated processes observed consistent with system-level access
+
+Defense Evasion: Deletion of binaries, removal of execution paths, hidden file usage
+
+Malware Activity: Multiple detections tied to the same device and timeline
+
+This incident reflects a deliberate, multi-phase intrusion rather than isolated malicious execution.
+
+3. Indicators of Compromise (IOCs)
+
+External Source IP: 164.92.218.170
+
+Unauthorized login to unmanaged host: MTS-Web
+
+Suspicious binaries executed from world-writable directories
+
+Multiple deleted sshd processes
+
+Elevated process execution following authentication
+
+Malware alerts correlated to attack timeline
+
+4. Investigation Timeline
+
+Activity Window:
+January 15, 2026
+12:50 PM – 2:44 PM EST
+(Initial Access: 05:49 UTC)
+
+Key Observations:
+
+Remote authentication using valid credentials
+
+Immediate script execution and binary deployment
+
+Deletion of executed binaries (likely to evade forensic visibility)
+
+Privilege escalation activity
+
+Malware execution and defense evasion behavior
+
+No confirmed ongoing activity beyond this window; however, persistence mechanisms cannot be ruled out.
+
+5. Technical Findings
+
+Authentication logs confirmed external access from a non-corporate IP.
+
+Attacker executed payloads from world-writable directories — a common tactic for stealth execution.
+
+Evidence of privilege escalation indicated system-level access was obtained.
+
+Deleted sshd processes suggest temporary remote access tooling.
+
+Malware detections align with attacker execution timeline.
+
+The attack demonstrates intent to establish covert persistence and maintain elevated access.
+
+6. MITRE ATT&CK Mapping
+Tactic	Technique
+Initial Access	Valid Accounts (T1078)
+Execution	Command and Scripting Interpreter (T1059)
+Privilege Escalation	Exploitation for Privilege Escalation (T1068)
+Defense Evasion	File Deletion (T1070)
+Persistence	Remote Services (T1021)
+Collection	System Information Discovery (T1082)
+
+The attack sequence follows a recognizable adversary kill chain pattern.
+
+7. Root Cause Analysis
+
+Likely contributing factors:
+
+Compromised credentials for newuser
+
+Remote access enabled without strong authentication controls
+
+Unmanaged Linux device with weaker monitoring and enforcement
+
+Lack of enforced MFA
+
+The unmanaged status of the endpoint significantly increased risk exposure.
+
+8. Containment & Remediation Actions
+
+Immediate isolation of MTS-Web from the network
+
+Credential reset for affected accounts
+
+Firewall block of IP 164.92.218.170
+
+Full malware scan and forensic analysis
+
+Reimage/rebuild of endpoint due to confirmed privilege escalation
+
+Enforcement of MFA and stronger authentication policies
+
+Restriction of remote access for unmanaged endpoints
+
+Enhanced logging for script execution and writable directory activity
+
+9. Impact Assessment
+
+Confirmed system compromise
+
+Elevated privileges obtained by attacker
+
+Malware executed on endpoint
+
+Potential risk of lateral movement (no evidence observed but possible)
+
+Given the multi-stage nature of the attack, full reimaging was the safest remediation path.
+
+10. Lessons Learned
+
+Valid credentials significantly reduce detection friction for attackers
+
+Unmanaged endpoints present disproportionate risk
+
+World-writable directory monitoring is critical in Linux environments
+
+Log correlation is essential to identifying multi-stage attack chains
+
+Analyst Reflection
+
+This investigation reinforced the importance of correlating authentication logs, process execution data, and malware alerts to identify structured adversary behavior rather than treating alerts as isolated events.
