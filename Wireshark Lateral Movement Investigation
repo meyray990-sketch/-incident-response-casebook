@@ -1,0 +1,202 @@
+
+
+![Status](https://img.shields.io/badge/status-complete-success)
+![Tool](https://img.shields.io/badge/tool-Wireshark-blue)
+![Technique](https://img.shields.io/badge/attack-Lateral%20Movement-red)
+![Focus](https://img.shields.io/badge/focus-SMB%20%2F%20PsExec-orange)
+
+---
+
+## Overview
+
+This investigation analyzes a PCAP file using Wireshark to identify evidence of lateral movement within a Windows environment. The analysis focuses on file transfers, authentication activity, service creation, and execution of a suspicious binary.
+
+---
+
+## Objectives
+
+* Identify transferred files
+* Determine attacker activity and tools used
+* Identify account used for access
+* Detect service creation behavior
+* Extract and analyze suspicious executable
+* Generate file hash for validation
+
+---
+
+## Key Findings
+
+| Category               | Finding                          |
+| ---------------------- | -------------------------------- |
+| Text Files Transferred | **3**                            |
+| Account Used           | **Administrator (ADMIN$ share)** |
+| Service Created        | **PSEXESVC**                     |
+| Tool Used              | **PsExec**                       |
+| Executable Dropped     | **googleupdate.exe**             |
+| SHA256 Hash            | **PASTE_HASH_HERE**              |
+
+---
+
+## Evidence of File Transfer
+
+SMB traffic was analyzed to identify transferred files.
+
+Filter used:
+
+```wireshark
+smb2
+```
+
+Files were extracted using:
+
+```
+File → Export Objects → SMB
+```
+
+### Screenshot: SMB Objects
+
+```
+screenshots/smb-objects.png
+```
+
+---
+
+## Text File Analysis
+
+The following text files were identified:
+
+* Maple.txt
+* Orbis.txt
+* Zakum.txt
+
+These files contained text-based data likely used for staging or supporting lateral movement activity.
+
+### Screenshot: Text File Content
+
+```
+screenshots/text-file.png
+```
+
+---
+
+## Authentication and Access
+
+Traffic analysis revealed access to an administrative share:
+
+```
+\\192.168.1.104\ADMIN$
+```
+
+This indicates the use of administrative-level credentials.
+
+---
+
+## Service Creation
+
+Artifacts consistent with PsExec activity were identified.
+
+* Service Name: **PSEXESVC**
+* Related artifact:
+
+```
+PSEXEC-DESKTOP-SALES-*.key
+```
+
+### Screenshot: Service Creation Evidence
+
+```
+screenshots/service.png
+```
+
+---
+
+## Executable Analysis
+
+A suspicious executable was identified and extracted:
+
+```
+googleupdate.exe
+```
+
+This file was transferred over SMB and used in conjunction with service creation.
+
+---
+
+## File Hash (SHA256)
+
+Hash generated using:
+
+```bash
+certutil -hashfile googleupdate.exe SHA256
+```
+
+**SHA256:**
+
+```
+PASTE_HASH_HERE
+```
+
+---
+
+## Analysis
+
+The observed activity is consistent with lateral movement using PsExec, a legitimate administrative tool frequently abused by attackers.
+
+Indicators include:
+
+* SMB-based file transfer
+* Use of administrative shares
+* Remote service creation
+* Execution of a transferred binary
+
+---
+
+## Risks Identified
+
+* Exposure of administrative shares
+* Use of privileged credentials
+* Abuse of legitimate administrative tools
+* Lack of monitoring for lateral movement activity
+
+---
+
+## Recommendations
+
+* Restrict access to ADMIN$ shares
+* Implement least privilege access controls
+* Monitor for PsExec and service creation events
+* Deploy endpoint detection and response (EDR) solutions
+* Enable detailed logging for SMB and authentication activity
+
+---
+
+## Skills Demonstrated
+
+* Packet analysis using Wireshark
+* SMB traffic investigation
+* File extraction from PCAP
+* Lateral movement detection
+* Windows service analysis
+* Hash generation and validation
+
+---
+
+## Project Structure
+
+```
+wireshark-lateral-movement/
+├── README.md
+├── screenshots/
+│   ├── smb-objects.png
+│   ├── text-file.png
+│   ├── service.png
+└── notes.md
+```
+
+---
+
+## Final Step
+
+```
+ cc14df781475ef0f3f2c441d03a622ea67cd86967526f8758ead6f45174db78e
+ 
