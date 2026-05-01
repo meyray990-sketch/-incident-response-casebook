@@ -1,0 +1,72 @@
+## Incident Report: ID 1964 – Initial Access (Unfamiliar Sign-In)
+
+### Overview
+
+This report documents the investigation of an *“Unfamiliar sign-in properties”* alert involving a single user account within a Microsoft Entra ID (Azure AD) environment. The objective was to determine the legitimacy of the activity and assess potential impact.
+
+---
+
+### Findings
+
+* Multiple authentication attempts from external IP address **216.131.77.73**
+* Authentication pattern observed: **fail → fail → success → success**
+* Successful authentication confirmed (`ResultType = 0`)
+* Authentication performed using **single-factor authentication (no MFA)**
+* Targeted application: **Outlook Web Access (OWA)**
+* Geographic anomaly identified: **United States and Canada within minutes (impossible travel)**
+* User confirmed the activity was **not legitimate**
+* No evidence of:
+
+  * Directory or account changes in **AuditLogs**
+  * Mailbox or user activity in **OfficeActivity**
+
+---
+
+### Investigation Summary
+
+An external source conducted multiple authentication attempts against the user account, ultimately achieving successful access using valid credentials. The behavior is consistent with credential validation or credential stuffing techniques.
+
+Following successful authentication, no additional activity was identified within the investigation window. This indicates that access was obtained but not actively leveraged during the observed timeframe.
+
+---
+
+### Impact Assessment
+
+* Classification: **True Positive**
+* Access: **Confirmed unauthorized authentication**
+* Impact: **Limited (no observed post-authentication activity)**
+* Risk: **High due to credential exposure and absence of MFA**
+
+---
+
+### Response Actions
+
+* Forced password reset for the affected account
+* Revoked all active sessions
+* Enforced Multi-Factor Authentication (MFA)
+* Continued monitoring for additional suspicious activity
+
+---
+
+### Key Observations
+
+* Successful authentication from an untrusted source is sufficient to classify an incident as a potential compromise
+* Absence of post-authentication activity does not eliminate risk
+* Impossible travel remains a strong indicator of account misuse
+* Lack of MFA significantly increases the likelihood of unauthorized access
+
+---
+
+### Data Sources
+
+* Microsoft Sentinel / Entra ID
+* SigninLogs
+* AuditLogs
+* OfficeActivity
+* KQL queries for log analysis
+
+---
+
+### Conclusion
+
+This incident represents a confirmed initial access event involving unauthorized use of valid credentials. Although no follow-on activity was observed, the account is considered compromised and required immediate remediation.
